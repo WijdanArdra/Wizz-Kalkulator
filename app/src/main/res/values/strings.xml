@@ -1,7 +1,7 @@
 <resources>
     <string name="nama_aplikasi">Wizz Kalkulator</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
-    <string name="copyright">Wizz Calculator merupakan sebuah aplikasi Android untuk menghitung satuan Panjang.\n\nCopyright © 2024 Wijdan Ardra Fulvian\nAll right reserved.</string>
+    <string name="copyright">Wizz Kalkulator merupakan sebuah aplikasi Android untuk menghitung satuan Panjang.\n\nCopyright © 2024 Wijdan Ardra Fulvian\nAll right reserved.</string>
     <string name="kembali">Kembali</string>
     <string name="kilometer">Kilometer</string>
     <string name="centimeter">Centimeter</string>
