@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nama_aplikasi">Wizz Calculator</string>
+    <string name="tentang_aplikasi">About App</string>
+    <string name="copyright">Wizz Calculator is an Android application for calculating Length units.\n\nCopyright © 2024 Wijdan Ardra Fulvian\nAll right reserved.</string>
+    <string name="kembali">Back</string>
+    <string name="kilometer">Kilometer</string>
+    <string name="centimeter">Centimeter</string>
+    <string name="input_invalid">Must not be empty</string>
+    <string name="bagikan">Share</string>
+    <string name="bagikan_template">Please enter the value in meters: %1$s\nSelected unit: %2$s\nResult: %3$.2f</string>
+    <string name="hasil">Result: %1$.2f</string>
+    <string name="opsi">Option: %1$s</string>
+    <string name="hitung">Calculate</string>
+    <string name="satuan_panjang">Select Length Unit</string>
+    <string name="masukkan_nilai">Enter Value</string>
+    <string name="deskripsi">This application is for calculating length units. Please enter the number you want to calculate.</string>
+    <string name="nilai_masukkan">Please enter the value in meters: %1$s</string>
+</resources>

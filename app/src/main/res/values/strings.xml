@@ -1,0 +1,18 @@
+<resources>
+    <string name="nama_aplikasi">Wizz Kalkulator</string>
+    <string name="tentang_aplikasi">Tentang Aplikasi</string>
+    <string name="copyright">Wizz Calculator merupakan sebuah aplikasi Android untuk menghitung satuan Panjang.\n\nCopyright © 2024 Wijdan Ardra Fulvian\nAll right reserved.</string>
+    <string name="kembali">Kembali</string>
+    <string name="kilometer">Kilometer</string>
+    <string name="centimeter">Centimeter</string>
+    <string name="input_invalid">Tidak boleh kosong</string>
+    <string name="bagikan">Bagikan</string>
+    <string name="bagikan_template">Nilai meter yang dimasukkan: %1$s\nSatuan yang dipilih: %2$s\nHasil: %3$.2f</string>
+    <string name="hasil">Hasil: %1$.2f</string>
+    <string name="opsi">Opsi: %1$s</string>
+    <string name="hitung">Hitung</string>
+    <string name="satuan_panjang">Pilih Satuan Panjang</string>
+    <string name="masukkan_nilai">Masukkan Nilai</string>
+    <string name="deskripsi">Aplikasi ini untuk menghitung satuan panjang. Silahkan masukkan angka yang ingin anda Hitung.</string>
+    <string name="nilai_masukkan">Nilai meter yang dimasukkan: %1$s</string>
+</resources>
