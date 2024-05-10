@@ -1,64 +1,69 @@
 package org.d3if3137.assessment1.ui.screen
 
-import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.d3if3137.assessment1.R
+import org.d3if3137.assessment1.database.KalkulatorDb
+import org.d3if3137.assessment1.model.Kalkulator
 import org.d3if3137.assessment1.navigation.Screen
 import org.d3if3137.assessment1.ui.theme.Assessment1Theme
+import org.d3if3137.assessment1.util.SettingsDataStore
+import org.d3if3137.assessment1.util.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
+    val dataStore = SettingsDataStore(LocalContext.current)
+    val showList by dataStore.layoutFlow.collectAsState(true)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,19 +71,39 @@ fun MainScreen(navController: NavHostController) {
                     Text(text = stringResource(id = R.string.nama_aplikasi))
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(
+                        onClick = {}) {
                         Image(
                             painter = painterResource(id = R.drawable.wizz),
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.logo_aplikasi),
                             modifier = Modifier.padding()
                         )
                     }
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 actions = {
+
+                    IconButton(
+                        onClick = {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                dataStore.saveLayout(!showList)
+                            }
+                        }) {
+                        Icon(
+                            painter = painterResource(
+                                if (showList) R.drawable.baseline_grid_view_24
+                                else R.drawable.baseline_view_list_24
+                            ),
+                            contentDescription = stringResource(
+                                if (showList) R.string.grid
+                                else R.string.list
+                            ),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     IconButton(
                         onClick = {
                             navController.navigate(Screen.About.route)
@@ -86,203 +111,166 @@ fun MainScreen(navController: NavHostController) {
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(R.string.tentang_aplikasi),
+                            contentDescription = stringResource(id = R.string.tentang_aplikasi),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             )
-        }
-    ) { padding ->
-        ScreenContent(Modifier.padding(padding))
-    }
-}
-
-@Composable
-fun ScreenContent(modifier: Modifier) {
-    var panjang by rememberSaveable { mutableStateOf("") }
-
-    var panjangError by rememberSaveable { mutableStateOf(false) }
-
-    val radioOptions = listOf(
-        stringResource(id = R.string.kilometer),
-        stringResource(id = R.string.centimeter)
-    )
-    var opsi by rememberSaveable { mutableStateOf(radioOptions[0]) }
-
-    var hasil by rememberSaveable { mutableFloatStateOf(0f) }
-
-    val context = LocalContext.current
-
-    Column(
-        modifier = modifier
-            .padding(8.dp)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(id = R.string.deskripsi),
-            modifier = Modifier
-                .padding(16.dp)
-        )
-
-        OutlinedTextField(
-            value = panjang,
-            onValueChange = { panjang = it },
-            isError = panjangError,
-            label = { Text(text = stringResource(id = R.string.masukkan_nilai)) },
-            trailingIcon = { IconPicker(panjangError, unit = "m") },
-            supportingText = { ErrorHint(panjangError) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            )
-        )
-
-        Text(text = stringResource(id = R.string.satuan_panjang), modifier = Modifier)
-
-        Row(
-            modifier = Modifier
-                .padding(bottom = 24.dp)
-                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            radioOptions.forEach { text ->
-
-                OpsiPanjang(
-                    label = text,
-                    isSelected = opsi == text,
-                    modifier = Modifier
-                        .selectable(
-                            selected = opsi == text,
-                            onClick = { opsi = text },
-                            role = Role.RadioButton
-                        )
-                        .padding(8.dp)
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(Screen.CountBaru.route)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(id = R.string.tambah_data),
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
+    ) { padding ->
+        ScreenContent(showList, Modifier.padding(padding), navController)
+    }
+}
 
-        Button(
-            modifier = Modifier.size(width = 110.dp, height = 50.dp),
-            onClick = {
-                panjangError = (panjang == "" || panjang == "0")
-                if (panjangError) return@Button
+@Composable
+fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostController) {
+    val context = LocalContext.current
+    val db = KalkulatorDb.getInstance(context)
+    val factory = ViewModelFactory(db.dao)
+    val viewModel: MainViewModel = viewModel(factory = factory)
+    val data by viewModel.data.collectAsState()
 
-                if (panjang.toFloat() != 0f) {
-                    hasil = when (opsi) {
-                        radioOptions[0] -> convertKilometer(panjang.toFloat())
-                        radioOptions[1] -> convertCentimeter(panjang.toFloat())
-                        else -> panjang.toFloat()
+    if (data.isEmpty()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier.size(150.dp),
+                painter = painterResource(id = R.drawable.baseline_dangerous_24),
+                contentDescription = stringResource(id = R.string.list_kosong)
+            )
+            Text(text = stringResource(id = R.string.list_kosong))
+        }
+    } else {
+        if (showList) {
+            LazyColumn(
+                modifier = modifier
+                    .padding(top = 16.dp)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 84.dp)
+            ) {
+                items(data) {
+                    ListItem(kalkulator = it) {
+                        navController.navigate(Screen.CountUbah.withId(it.id))
+                    }
+                    Divider()
+                }
+            }
+        } else {
+            LazyVerticalStaggeredGrid(
+                modifier = modifier
+                    .padding(top = 16.dp)
+                    .fillMaxSize(),
+                columns = StaggeredGridCells.Fixed(2),
+                verticalItemSpacing = 8.dp,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(8.dp, 8.dp, 8.dp, 84.dp)
+            ) {
+                items(data) {
+                    GridItem(kalkulator = it) {
+                        navController.navigate(Screen.CountUbah.withId(it.id))
                     }
                 }
-            }) {
-            Text(
-                text = stringResource(id = R.string.hitung),
-                fontSize = 18.sp
-
-            )
-        }
-        if (hasil != 0f) {
-            Divider(
-                modifier = Modifier.padding(vertical = 8.dp),
-                thickness = 1.dp
-            )
-            Text(text = stringResource(id = R.string.nilai_masukkan, panjang))
-            Text(
-                text = stringResource(id = R.string.opsi, opsi),
-                modifier = Modifier.padding(8.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.hasil, hasil)
-            )
-            Button(
-                onClick = {
-                    shareData(
-                        context = context,
-                        message = context.getString(
-                            R.string.bagikan_template,
-                            panjang, opsi, hasil
-                        )
-                    )
-                },
-                modifier = Modifier.padding(top = 8.dp),
-                contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-            ) {
-                Text(text = stringResource(R.string.bagikan))
             }
         }
     }
 }
 
 @Composable
-fun OpsiPanjang(
-    label: String,
-    isSelected: Boolean,
-    modifier: Modifier,
-) {
-
-    Row(
-        modifier = modifier
-            .padding(vertical = 9.dp),
-        verticalAlignment = Alignment.CenterVertically
+fun ListItem(kalkulator: Kalkulator, onClick: () -> Unit = {}) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        RadioButton(
-            selected = isSelected,
-            onClick = null
+        Text(
+            text = kalkulator.judul,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.Bold
         )
         Text(
-            text = label,
-            modifier = Modifier.padding(start = 16.dp)
+            text = kalkulator.masukkan,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            text = kalkulator.opsi,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            text = kalkulator.hasil,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
 
 @Composable
-fun IconPicker(isError: Boolean, unit: String) {
-    if (isError) {
-        Icon(
-            imageVector = Icons.Filled.Warning,
-            contentDescription = null
-        )
-    } else {
-        Text(text = unit)
-    }
-}
-
-@Composable
-fun ErrorHint(isError: Boolean) {
-    if (isError) {
-        Text(
-            text = stringResource(R.string.input_invalid)
-        )
-    }
-}
-
-private fun convertKilometer(panjang: Float): Float {
-    return panjang / 1000
-}
-
-private fun convertCentimeter(panjang: Float): Float {
-    return panjang * 100
-}
-
-private fun shareData(context: Context, message: String) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, message)
-    }
-    if (shareIntent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(shareIntent)
+fun GridItem(kalkulator: Kalkulator, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        border = BorderStroke(1.dp, Color.Gray)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = kalkulator.judul,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = kalkulator.masukkan,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = kalkulator.opsi,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = kalkulator.hasil,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun ScreenPreview() {
+fun MainScreenPreview() {
     Assessment1Theme {
         MainScreen(rememberNavController())
     }
