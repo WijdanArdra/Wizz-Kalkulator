@@ -5,7 +5,7 @@
     <string name="kembali">Kembali</string>
     <string name="kilometer">Kilometer</string>
     <string name="centimeter">Centimeter</string>
-    <string name="input_invalid">Tidak boleh kosong</string>
+    <string name="input_invalid">Form input tidak boleh kosong</string>
     <string name="bagikan">Bagikan</string>
     <string name="bagikan_template">Nilai meter yang dimasukkan: %1$s\nSatuan yang dipilih: %2$s\nHasil: %3$.2f</string>
     <string name="hasil">Hasil: %1$.2f</string>
@@ -13,6 +13,19 @@
     <string name="hitung">Hitung</string>
     <string name="satuan_panjang">Pilih Satuan Panjang</string>
     <string name="masukkan_nilai">Masukkan Nilai</string>
-    <string name="deskripsi">Aplikasi ini untuk menghitung satuan panjang. Silahkan masukkan angka yang ingin anda Hitung.</string>
     <string name="nilai_masukkan">Nilai meter yang dimasukkan: %1$s</string>
+    <string name="lainnya">Opsi lainnya</string>
+    <string name="hapus">Hapus data</string>
+    <string name="pesan_hapus">Hapus data ini?</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
+    <string name="list">Tampilan list</string>
+    <string name="grid">Tampilan grid</string>
+    <string name="tambah_data">Tambah data</string>
+    <string name="list_kosong">Belum ada data</string>
+    <string name="judul_simpan">Judul simpan data</string>
+    <string name="logo_aplikasi">Logo aplikasi Wizz Kalkulator</string>
+    <string name="hitung_aplikasi">Hitung Panjang</string>
+    <string name="simpan">Simpan</string>
+    <string name="edit_data">Edit Data</string>
 </resources>
