@@ -14,6 +14,19 @@
     <string name="hitung">Calculate</string>
     <string name="satuan_panjang">Select Length Unit</string>
     <string name="masukkan_nilai">Enter Value</string>
-    <string name="deskripsi">This application is for calculating length units. Please enter the number you want to calculate.</string>
     <string name="nilai_masukkan">Please enter the value in meters: %1$s</string>
+    <string name="lainnya">Option</string>
+    <string name="hapus">Delete data</string>
+    <string name="pesan_hapus">Delete this data?</string>
+    <string name="tombol_hapus">Delete</string>
+    <string name="tombol_batal">Cancel</string>
+    <string name="list">List view</string>
+    <string name="grid">Grid view</string>
+    <string name="tambah_data">Add data</string>
+    <string name="list_kosong">There is no data yet</string>
+    <string name="judul_simpan">Save data title</string>
+    <string name="logo_aplikasi">The application logo for Wizz Calculator</string>
+    <string name="hitung_aplikasi">Calculate Length</string>
+    <string name="simpan">Save</string>
+    <string name="edit_data">Edit Data</string>
 </resources>
