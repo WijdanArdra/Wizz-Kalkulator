@@ -2,7 +2,9 @@ package org.d3if3137.assessment1.ui.screen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -30,6 +32,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3137.assessment1.R
 import org.d3if3137.assessment1.ui.theme.Assessment1Theme
+import org.d3if3137.assessment1.ui.theme.BgClr
+import org.d3if3137.assessment1.ui.theme.TABClr
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +55,7 @@ fun AboutScreen(navController: NavHostController) {
                     Text(text = stringResource(id = R.string.tentang_aplikasi))
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = TABClr,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 )
             )
@@ -65,6 +69,8 @@ fun AboutScreen(navController: NavHostController) {
 fun AboutContent(modifier: Modifier) {
     Column(
         modifier = modifier
+            .fillMaxSize()
+            .background(BgClr)
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,

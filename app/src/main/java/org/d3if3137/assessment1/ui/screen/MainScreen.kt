@@ -3,6 +3,7 @@ package org.d3if3137.assessment1.ui.screen
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,10 @@ import org.d3if3137.assessment1.database.KalkulatorDb
 import org.d3if3137.assessment1.model.Kalkulator
 import org.d3if3137.assessment1.navigation.Screen
 import org.d3if3137.assessment1.ui.theme.Assessment1Theme
+import org.d3if3137.assessment1.ui.theme.BgClr
+import org.d3if3137.assessment1.ui.theme.GridClr
+import org.d3if3137.assessment1.ui.theme.TABClr
+import org.d3if3137.assessment1.ui.theme.TeksClr
 import org.d3if3137.assessment1.util.SettingsDataStore
 import org.d3if3137.assessment1.util.ViewModelFactory
 
@@ -81,7 +86,7 @@ fun MainScreen(navController: NavHostController) {
                     }
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = TABClr,
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 actions = {
@@ -147,6 +152,7 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
     if (data.isEmpty()) {
         Column(
             modifier = modifier
+                .background(BgClr)
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
@@ -163,6 +169,7 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
         if (showList) {
             LazyColumn(
                 modifier = modifier
+                    .background(BgClr)
                     .padding(top = 16.dp)
                     .fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 84.dp)
@@ -171,12 +178,13 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
                     ListItem(kalkulator = it) {
                         navController.navigate(Screen.CountUbah.withId(it.id))
                     }
-                    Divider()
+                    Divider(thickness = 3.dp)
                 }
             }
         } else {
             LazyVerticalStaggeredGrid(
                 modifier = modifier
+                    .background(BgClr)
                     .padding(top = 16.dp)
                     .fillMaxSize(),
                 columns = StaggeredGridCells.Fixed(2),
@@ -234,32 +242,44 @@ fun GridItem(kalkulator: Kalkulator, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = GridClr,
         ),
-        border = BorderStroke(1.dp, Color.Gray)
+        border = BorderStroke(1.dp, Color.DarkGray)
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
+                modifier = Modifier
+                    .padding(start = 8.dp),
                 text = kalkulator.judul,
+                color = TeksClr,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold
             )
             Text(
+                modifier = Modifier
+                    .padding(start = 8.dp),
                 text = kalkulator.masukkan,
+                color = TeksClr,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
+                modifier = Modifier
+                    .padding(start = 8.dp),
                 text = kalkulator.opsi,
+                color = TeksClr,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
+                modifier = Modifier
+                    .padding(start = 8.dp),
                 text = kalkulator.hasil,
+                color = TeksClr,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

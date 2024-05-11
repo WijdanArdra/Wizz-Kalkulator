@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,8 @@ import org.d3if3137.assessment1.R
 import org.d3if3137.assessment1.database.KalkulatorDb
 import org.d3if3137.assessment1.navigation.Screen
 import org.d3if3137.assessment1.ui.theme.Assessment1Theme
+import org.d3if3137.assessment1.ui.theme.BgClr
+import org.d3if3137.assessment1.ui.theme.TABClr
 import org.d3if3137.assessment1.util.ViewModelFactory
 
 const val KEY_ID_KALKULATOR = "idKalkulator"
@@ -117,7 +120,7 @@ fun CountScreen(navController: NavHostController, id: Long? = null) {
                     }
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = TABClr,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 actions = {
@@ -187,6 +190,7 @@ fun ScreenContent(
 
     Column(
         modifier = modifier
+            .background(BgClr)
             .padding(8.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
@@ -225,7 +229,7 @@ fun ScreenContent(
         Row(
             modifier = Modifier
                 .padding(bottom = 24.dp)
-                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
+                .border(1.dp, Color.DarkGray, RoundedCornerShape(4.dp)),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             radioOptions.forEach { text ->
